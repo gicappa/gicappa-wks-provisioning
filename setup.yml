@@ -1,4 +1,4 @@
-- name: a playbook to setup my local machine with my basic customizations
+- name: Ansible Playbook to setup GK workstation
   hosts: local
   connection: local
   roles:
