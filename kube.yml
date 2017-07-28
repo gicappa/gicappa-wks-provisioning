@@ -1,0 +1,6 @@
+- include: ansible-setup.yml
+- name: Ansible Playbook to setup a Kube node
+  hosts: kube-nodes
+  connection: ssh
+  roles:
+    - kube

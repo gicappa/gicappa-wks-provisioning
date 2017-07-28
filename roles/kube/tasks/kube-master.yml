@@ -1,0 +1,23 @@
+---
+- include: kube-common-node.yml
+
+- name: initialize kube master node
+  command: kubeadm init
+  register: kub-master-init.log
+
+- name: Creates kube config directory
+  file: 
+    path: /root/.kube 
+    state: directory
+  sudo: yes
+
+- copy:
+    src: /etc/kubernetes/admin.conf 
+    dest: /root/.kube/config
+  sudo: yes
+
+- name: create kube dashboard 
+  command: kubectl create -f https://git.io/kube-dashboard
+  register: kub-master-init.log
+
+

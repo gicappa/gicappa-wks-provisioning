@@ -1,0 +1,43 @@
+---
+# - include: ansible-setup.yml
+- name: install kubernetes common node requirements
+  apt:
+    name: apt-transport-https
+    update_cache: yes
+  sudo: yes
+
+- name: add k8 google repo key
+  apt_key:
+    url: https://packages.cloud.google.com/apt/doc/apt-key.gpg
+    state: present
+  sudo: yes
+
+- apt_repository:
+    repo: deb http://apt.kubernetes.io/ kubernetes-xenial main  
+    state: present
+    filename: 'kubernetes'
+  sudo: yes
+
+- name: install kubernetes common node requirements
+  apt: 
+    name: "{{item}}"  
+    state: present
+    update_cache: yes
+  with_items:
+      - docker.io
+      - kubelet 
+      - kubeadm
+      - kubectl
+      - kubernetes-cni
+  sudo: yes
+
+- name: Creates kube config directory
+  file: 
+    path: /root/.kube 
+    state: directory
+  sudo: yes
+
+- copy:
+    src: /etc/kubernetes/admin.conf 
+    dest: /root/.kube/config
+  sudo: yes
